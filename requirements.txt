@@ -1,6 +1,7 @@
 streamlit==0.81.1
 bs4==0.0.1
 requests==2.23.0
+numpy==1.19.5
 pandas==1.1.5
 contractions==0.0.48
 emot==2.1
