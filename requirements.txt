@@ -7,4 +7,4 @@ contractions==0.0.48
 emot==2.1
 nltk==3.2.5
 vaderSentiment==3.3.2
-scikit-image==0.16.2
+
