@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from skimage.io import imread,imshow
+
 import re
 import contractions
 import nltk
@@ -153,7 +153,7 @@ if st.button('confirm') or name != '':
         emoji.append('\U0001F611')
 
     #dic=get_urls(name)
-    pic = imread(dic[new][1])
+    
     col1, col2, col3 = st.beta_columns([1,1,1])
     col2.image(pic, use_column_width=True, caption=new)
 
