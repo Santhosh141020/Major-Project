@@ -1,9 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from skimage.io import imread,imshow,imshow_collection
+from skimage.io import imread,imshow
 import re
 import contractions
 import nltk
