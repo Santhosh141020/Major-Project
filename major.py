@@ -155,7 +155,7 @@ if st.button('confirm') or name != '':
     #dic=get_urls(name)
     
     col1, col2, col3 = st.beta_columns([1,1,1])
-    col2.image(pic, use_column_width=True, caption=new)
+    col2.image(dic[new][1], use_column_width=True, caption=new)
 
     
     df1 = pd.DataFrame({'Reviews':reviews,
