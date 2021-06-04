@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import matplotlib.pyplot as plt
-
 import re
 from emot.emo_unicode import UNICODE_EMO
 import contractions
@@ -182,9 +180,9 @@ try :
             df1 = pd.DataFrame({'Reviews': reviews,
                                 'Compound Score': compound1,
                                 'Emojis': emoji})
-            pic = plt.imread(dic[new][1])
+            #pic = plt.imread(dic[new][1])
             col1, col2, col3 = st.beta_columns([1, 1, 1])
-            col2.image(pic, caption=new, use_column_width = True)
+            col2.image(dic[new][1], caption=new, use_column_width = True)
     except KeyError:
         st.write("Copy the Product name properly")
 except IndexError:
