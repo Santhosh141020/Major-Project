@@ -7,4 +7,4 @@ contractions==0.0.48
 emot==2.1
 nltk==3.2.5
 vaderSentiment==3.3.2
-opencv-python==4.3.0.38
+matplotlib==3.3.4
