@@ -71,7 +71,7 @@ def get_urls(name):
     for i in range(len(links)):
         links[i] = "https://www.flipkart.com" + links[i]
         if img_links[i] == '':
-            img_links[i] = 'http://fremontgurdwara.org/wp-content/uploads/2020/06/no-image-icon-2.png'
+            img_links[i] = 'image.png'
         dic[products[i]] = [links[i], img_links[i]]
 
     return dic
