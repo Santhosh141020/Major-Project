@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from skimage.io import imread
+import cv2
 
 import re
 from emot.emo_unicode import UNICODE_EMO
@@ -182,7 +182,7 @@ try :
             df1 = pd.DataFrame({'Reviews': reviews,
                                 'Compound Score': compound1,
                                 'Emojis': emoji})
-            pic = imread(dic[new][1])
+            pic = cv2.imread(dic[new][1])
             col1, col2, col3 = st.beta_columns([1, 1, 1])
             col2.image(pic, caption=new, use_column_width = True)
     except KeyError:
