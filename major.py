@@ -66,7 +66,7 @@ def get_urls(name):
         models = models[:20]
         for i in range(len(brand)):
           products.append(brand[i]+ ' '+model[i])
-         links = links[:20]
+        links = links[:20]
         img_links = img_links[:20] 
 
     for i in range(len(links)):
