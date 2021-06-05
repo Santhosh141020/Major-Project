@@ -227,7 +227,7 @@ try:
             else:
                 col2.write("No more reviews available")
     else:
-        col2.dataframe(
-            df1.style.set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'}))
+        col1, col2, col3 = st.beta_columns([0.1, 1, 0.01])
+        col2.dataframe(df1.style.set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'}))
 except:
     pass
