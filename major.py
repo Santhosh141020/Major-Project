@@ -51,25 +51,32 @@ def get_urls(name):
             img_links.append(n_link)
 
     else:
-        brand = []
-        model=[]
+        brands = []
+        models=[]
         for link in soup.findAll("a", attrs={"class": "IRpwTa"}):
             n_link = link.get('href')
-            model.append(link.get_text())
+            models.append(link.get_text())
             links.append(n_link)
         for link in soup.findAll("img", attrs={"class": "_2r_T1I"}):
             n_link = link.get('src')
             img_links.append(n_link)
         for product in soup.findAll("div", attrs={"class": "_2WkVRV"}):
-            brand.append(product.get_text())
+            brands.append(product.get_text())
+        brands = brands[:20]
+        models = models[:20]
         for i in range(len(brand)):
           products.append(brand[i]+ ' '+model[i])
-          
+         links = links[:20]
+        img_links = img_links[:20] 
 
     for i in range(len(links)):
         links[i] = "https://www.flipkart.com" + links[i]
         if img_links[i] == '':
             img_links[i] = 'image.png'
+        products[i] = products[i].replace('-', '')
+        products[i] = products[i].replace('  ', '')
+        if len(products[i]) > 50:
+            products[i]=products[i][:50]
         dic[products[i]] = [links[i], img_links[i]]
 
     return dic
@@ -146,19 +153,23 @@ try :
   if st.button('Confirm') or name is not None:
     dic = get_urls(name)
     keys = list(dic.keys())
-    for i in range(5):
-        st.write(keys[i])
-        
-    if st.checkbox('Show  some more Suggestions'):
+    if len(keys)>=5:
+        for i in range(5):
+            st.write(keys[i])
+    
+        if st.checkbox('Show  some more Suggestions'):
+            for i in range(len(keys)):
+                if i >= 5:
+                    st.write(keys[i])
+        else :
         for i in range(len(keys)):
-            if i >= 5:
-                st.write(keys[i])
-
+            st.write(keys[i])  
     try:
         st.subheader("Copy the perfect name of the product of your interest from the above list")
         new = st.text_input(" ")
         if st.button('Yes my interest is true') or new != '':
             reviews = get_reviews(dic, new)
+            
             # preprocessing function
             processed_reviews = preprocessing(reviews)
             Analyze = SentimentIntensityAnalyzer()
@@ -169,39 +180,39 @@ try :
 
             # emoji's appending
             for x in range(len(reviews)):
-                if compound1[x] >= 0.8:
+                if compound1[x] >= 0.5:
                     emoji.append('\U0001F600\U0001F600\U0001F600')
-                elif compound1[x] < 0.8 and compound1[x] > 0.1:
+                elif compound1[x] < 0.5 and compound1[x] > -0.5:
                     emoji.append('\U0001F642\U0001F642')
-                elif compound1[x] <= 0.1:
+                elif compound1[x] <= -0.5:
                     emoji.append('\U0001F611')
 
-            # pd.options.display.max_colwidth = 100
+            pd.options.display.max_colwidth = 100
             df1 = pd.DataFrame({'Reviews': reviews,
                                 'Compound Score': compound1,
                                 'Emojis': emoji})
-            #pic = plt.imread(dic[new][1])
+            
             col1, col2, col3 = st.beta_columns([1, 1, 1])
             col2.image(dic[new][1], caption=new, use_column_width = True)
     except KeyError:
-        st.write("Copy the Product name properly")
+        st.write("Copy the Product name properly  \U0001F642")
 except IndexError:
     st.write("Please enter the product name \U0001F642 \U0001F642")
 
 print('Finished Processing\n')
 
 try:
-    col1, col2, col3 = st.beta_columns([0.1, 1, 0.01])
-    if df1.empty:
-        col2.write('Reviews Not Available')
-    else:
+    if len(df) >=5 :
+        col1, col2, col3 = st.beta_columns([0.1, 1, 0.01])
         col2.dataframe(df1[0:5].style.set_properties(**{'text-align': 'center', 'color': 'black', 'background-color': 'white'}))
 
-    if st.checkbox('Show all reviews'):
-        col1, col2, col3 = st.beta_columns([0.1, 1, 0.01])
-        if len(df1['Reviews']) >=5:
-            col2.dataframe(df1[5:].style.set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'}))
-        else :
-            col2.write("No more reviews available")
+        if st.checkbox('Show all reviews'):
+            col1, col2, col3 = st.beta_columns([0.1, 1, 0.01])
+            if len(df1['Reviews']) >=5:
+                col2.dataframe(df1[5:].style.set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'}))
+            else :
+                col2.write("No more reviews available")
+    else:
+        col2.dataframe(df1.style.set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'}))
 except:
     pass
