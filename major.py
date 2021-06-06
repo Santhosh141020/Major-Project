@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 from emot.emo_unicode import UNICODE_EMO
-import contractions
+#import contractions
 import nltk
 from nltk.tokenize.toktok import ToktokTokenizer
 
@@ -82,7 +82,8 @@ def get_urls(name):
 
     return dic
 
-
+@st.cache
+# Reviews Scrapping
 def get_reviews(dic, new):
     reviews = []
     url = dic[new][0]
@@ -94,26 +95,22 @@ def get_reviews(dic, new):
         reviews.append(r.get_text())
     return reviews
 
-
 # Remove HTML Tag
 def html_tag(text):
     Soup = BeautifulSoup(text, "html.parser")
     new_text = Soup.get_text()
     return new_text
 
-
 # Expand Contractions
-def con(text):
-    expand = contractions.fix(text)
-    return expand
-
+#def con(text):
+#    expand = contractions.fix(text)
+#    return expand
 
 # Remove Special Characters
 def remove_sp(text):
     pattern = r'[^A-Za-z0-9\s]'
     text = re.sub(pattern, '', text)
     return text
-
 
 # Remove stopwords
 def remove_stopwords(text):
@@ -133,13 +130,11 @@ def remove_stopwords(text):
     filtered_text = ' '.join(filtered_tokens)
     return filtered_text
 
-
 # convert emojis to words
 def convert_emojis(text):
     for emot in UNICODE_EMO:
         text = text.replace(emot,' '.join(UNICODE_EMO[emot].replace(',', '').replace(':', '').replace('_', ' ').split()))
     return text
-
 
 # preprocessing function
 def preprocessing(reviews):
@@ -150,11 +145,46 @@ def preprocessing(reviews):
         processed_reviews[i] = html_tag(processed_reviews[i])
         processed_reviews[i] = remove_sp(processed_reviews[i])
         processed_reviews[i] = convert_emojis(processed_reviews[i])
-        processed_reviews[i] = con(processed_reviews[i])
+        #processed_reviews[i] = con(processed_reviews[i])
     return (processed_reviews)
 
+#sidebar program
+def sidebar ():
+    col1, col2, col3 = st.sidebar.beta_columns([1, 1, 1])
+    col2.image('logo.jpg', width=80)
+
+    expander = st.sidebar.beta_expander('About Us')
+    expander.markdown("""In this app we have tried to do sentimental analysis on reviews in  Flipkart :
+    Online shopping website.
+    User can get the reviews of almost all products that are available in the Flipkart website.
+    <br>Along with Compound Score we have appended the emojis for better understanding. 
+    Compound Score is classified based on the  below table.<br><br>
+    Compound score > 0.5  : Positive<br>
+    Compound score >-0.5 and < 0.5 : Neutral<br>
+    Compound score < -0.5 Negative   
+    """, True)
+
+    expander1 = st.sidebar.beta_expander('Steps To be Followed')
+    expander1.markdown("""<ol>
+    <b>Step 1</b> : Enter the name of product and press confirm <br>
+    <b>Step 2 </b>: From list displayed copy the product of your desire along with the spaces between words <br>
+    If your desired product is not in list click the check box <u>show more suggestion</u> and paste it in 2nd text box and
+     click on <u>Yes my interest is true</u><br>
+    <b>Step 3 </b>: you will get the sentimental analysis of the 5 reviews if you need more check the box
+     show more reviews<br>""", True)
+
+    expander2 = st.sidebar.beta_expander('Suggestion')
+    expander2.markdown(""" <ol type ='1'>
+    <li> Electronic Gadgets <br> Eg : Mobile</li>
+    <li> Electronics Accessories <br> Eg : Speakers, Power banks</li>
+    <li> Electrical Appliances <br> Eg : TV's, Refrigerator </li>
+    <li> Furniture's </li>
+    <li> Toys </li>
+    <li> Fashions <br> Eg : Dresses, Watches </li>
+    """, True)
 
 st.title('SENTIMENTAL ANALYSIS ON REVIEWS')
+sidebar()
 st.subheader("Enter the Product Name")
 name = st.text_input("")
 
@@ -228,6 +258,7 @@ try:
                 col2.write("No more reviews available")
     else:
         col1, col2, col3 = st.beta_columns([0.1, 1, 0.01])
-        col2.dataframe(df1.style.set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'}))
+        col2.dataframe(
+            df1.style.set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'}))
 except:
     pass
