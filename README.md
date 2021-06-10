@@ -1,7 +1,7 @@
 # Major-Project
 
 ## Data
-In this project we scrapped flipkart website and (url link)[https://www.flipkart.com/], and extracted products list, their images and reviews.
+In this project we scrapped flipkart website and for link [Click Here](https://www.flipkart.com/), and extracted products list, their images and reviews.
 and those reviews were treated as data for sentimental analysis
 
 ## Libray used
